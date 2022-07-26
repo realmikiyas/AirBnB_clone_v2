@@ -1,35 +1,14 @@
 #!/usr/bin/env bash
-# Sets up a web server for deployment of web_static.
+# set up dummy html
 
-sudo apt-get update
-sudo apt-get install -y nginx
-
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
-echo "Holberton School" > /data/web_static/releases/test/index.html
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-
-sudo chown -R ubuntu /data/
-sudo chgrp -R ubuntu /data/
-
-printf %s "server {
-    listen 80;
-    listen [::]:80 default_server;
-    add_header X-Served-By $HOSTNAME;
-    root   /etc/nginx/html;
-    index  index.html index.htm;
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
-    }
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-    error_page 404 /404.html;
-    location /404 {
-      root /etc/nginx/html;
-      internal;
-    }
-}" > /etc/nginx/sites-available/default
-
+server="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
+file="/etc/nginx/sites-available/default"
+sudo apt-get update -y
+sudo apt-get install nginx -y
+sudo mkdir -p "/data/web_static/releases/test/"
+sudo mkdir "/data/web_static/shared/"
+echo "Holberton" > "/data/web_static/releases/test/index.html"
+rm -f "/data/web_static/current"; ln -s "/data/web_static/releases/test/" "/data/web_static/current"
+sudo chown -hR ubuntu:ubuntu "/data/"
+sudo sed -i "29i\ $server" "$file"
 sudo service nginx restart
