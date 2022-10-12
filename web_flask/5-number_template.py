@@ -1,48 +1,48 @@
 #!/usr/bin/python3
-""" Starts a Flask web application """
-from flask import Flask
-from flask import render_template
+"""Flask framework
+"""
+from flask import Flask, url_for, render_template
+
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
-def hello_hbn():
-    """ Returns Hello HBNB! from 0.0.0.0:5000 """
+@app.route("/", strict_slashes=False)
+def hello_world():
+    """return hello hbhb
+    """
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """ Returns HBNB from 0.0.0.0:5000/hbnb """
+@app.route("/hbnb", strict_slashes=False)
+def HBNB():
+    """return HBNB"""
     return "HBNB"
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text):
-    """ Returns C followed by the value of text """
-    text = text.replace('_', ' ')
-    return "C {}".format(text)
+def text(text):
+    """return text given"""
+    return "C {}".format(text.replace("_", " "))
 
 
-@app.route('/python', strict_slashes=False)
+@app.route('/python/', defaults={'text': 'is_cool'})
 @app.route('/python/<text>', strict_slashes=False)
-def python_route(text="is cool"):
-    """ Returns Python followed by the vale of the text """
-    text = text.replace('_', ' ')
-    return "Python {}".format(text)
+def display(text):
+    """display “Python ”, followed by the value of the text"""
+    return "Python {}".format(text.replace("_", " "))
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
-def number_route(n):
-    """ Returns n is a number if n is an integer """
+def num_display(n):
+    """display “n is a number” only"""
     return "{} is a number".format(n)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
-def number_template(n):
-    """ Returns an HTML page only if n is an integer """
-    return render_template("5-number.html", n=n)
+def num_html(n):
+    """display HTML is "n" is a number only"""
+    return render_template('5-number.html', name=n)
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    app.run()
