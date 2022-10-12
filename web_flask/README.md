@@ -1,2 +1,1 @@
-# Flask Web framework
-
+# AirBnB clone - Web framework
